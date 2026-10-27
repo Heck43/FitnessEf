@@ -38,5 +38,5 @@
 - [x] **Задание 8:** NULL, типы и конфигурация модели (Fluent API, IsNullable, HasMaxLength)
 - [x] **Задание 9:** Связь «клиент — посещения» (Сущность Visit, 1:N, Include, Restrict)
 - [x] **Задание 10:** Миграции и существующая база (Scaffold базы Fitnes, ExistingData)
-- [ ] **Задание 11:** Ошибки, async, tracking и SQL (AsNoTracking, ToQueryString)
+- [x] **Задание 11:** Ошибки, async, tracking и SQL (AsNoTracking, ToQueryString, ChangeTracker)
 - [ ] **Задание 12:** Итоговая работа и проверка навыков (Консольное CRUD-приложение)

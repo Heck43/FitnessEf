@@ -20,6 +20,7 @@ await RunTask7Async();
 await RunTask8Async();
 await RunTask9Async();
 await RunTask10Async();
+await RunTask11Async();
 
 static async Task RunTask2Async()
 {
@@ -389,4 +390,43 @@ static async Task RunTask10Async()
     }
 
     Console.WriteLine("Задание 10 успешно пройдено.\n");
+}
+
+static async Task RunTask11Async()
+{
+    Console.WriteLine("--- [Задание 11] Ошибки, async, tracking и SQL ---");
+    
+    try
+    {
+        await using var db = new FitnessContext();
+
+        Console.WriteLine("11.3. Сравнение отслеживаемого и нетрекаемого запроса:");
+        var untracked = await db.Clients.AsNoTracking().FirstOrDefaultAsync(c => c.ClientId == 1);
+        var tracked = await db.Clients.FirstOrDefaultAsync(c => c.ClientId == 1);
+        Console.WriteLine($"  AsNoTracking: State = {(untracked != null ? db.Entry(untracked).State.ToString() : "null")}");
+        Console.WriteLine($"  Tracked:      State = {(tracked != null ? db.Entry(tracked).State.ToString() : "null")}");
+
+        Console.WriteLine("\n11.4. Диагностика трансляции SQL (ToQueryString):");
+        var query = db.Clients
+            .Where(c => c.Status == "active")
+            .OrderBy(c => c.LastName);
+        Console.WriteLine(query.ToQueryString());
+
+        var clients = await db.Clients.AsNoTracking().ToListAsync();
+        Console.WriteLine($"11.1. Базовая обработка: успешно загружено клиентов: {clients.Count}");
+    }
+    catch (InvalidOperationException ex)
+    {
+        Console.WriteLine($"Ошибка конфигурации: {ex.Message}");
+    }
+    catch (DbUpdateException ex)
+    {
+        Console.WriteLine($"Ошибка сохранения данных: {ex.GetBaseException().Message}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Произошла непредвиденная ошибка: {ex.Message}");
+    }
+
+    Console.WriteLine("\nЗадание 11 успешно пройдено.\n");
 }
