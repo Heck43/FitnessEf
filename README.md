@@ -34,7 +34,7 @@
 - [x] **Задание 4:** Чтение, сортировка и проекция (ToListAsync, OrderBy, Select)
 - [x] **Задание 5:** Фильтрация и поиск (Where, Any, Count, Skip/Take)
 - [x] **Задание 6:** Добавление записей (Add, SaveChangesAsync, валидация, DbUpdateException)
-- [ ] **Задание 7:** Изменение и удаление (UPDATE, DELETE)
+- [x] **Задание 7:** Изменение и удаление (UPDATE, DELETE, SaveChangesAsync)
 - [ ] **Задание 8:** NULL, типы и конфигурация модели (Fluent API)
 - [ ] **Задание 9:** Связь «клиент — посещения» (Include, 1-to-many)
 - [ ] **Задание 10:** Миграции и существующая база (Scaffold)

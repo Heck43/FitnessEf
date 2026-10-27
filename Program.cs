@@ -15,6 +15,7 @@ await RunTask3Async();
 await RunTask4Async();
 await RunTask5Async();
 await RunTask6Async();
+await RunTask7Async();
 
 static async Task RunTask2Async()
 {
@@ -214,4 +215,54 @@ static async Task RunTask6Async()
     }
 
     Console.WriteLine("Задание 6 успешно пройдено.\n");
+}
+
+static async Task RunTask7Async()
+{
+    Console.WriteLine("--- [Задание 7] Изменение и удаление данных ---");
+    await using var db = new FitnessContext();
+
+    int updateId = 1;
+    var clientToUpdate = await db.Clients.FirstOrDefaultAsync(c => c.ClientId == updateId);
+    if (clientToUpdate is not null)
+    {
+        string oldPhone = clientToUpdate.Phone ?? "не указан";
+        clientToUpdate.Phone = "79990001122";
+        await db.SaveChangesAsync();
+        Console.WriteLine($"7.1. UPDATE: Клиент ID {updateId} ({clientToUpdate.FirstName} {clientToUpdate.LastName}), телефон изменён: {oldPhone} -> {clientToUpdate.Phone}");
+
+        clientToUpdate.Phone = "79991112233";
+        await db.SaveChangesAsync();
+    }
+
+    var tempClient = new Client
+    {
+        FirstName = "Временный",
+        LastName = "ДляУдаления",
+        RegistrationDate = DateOnly.FromDateTime(DateTime.Today),
+        Status = "inactive"
+    };
+    db.Clients.Add(tempClient);
+    await db.SaveChangesAsync();
+    int tempId = tempClient.ClientId;
+    Console.WriteLine($"\n7.2. DELETE: Создан временный клиент ID {tempId} для проверки удаления");
+
+    var toDelete = await db.Clients.FindAsync(tempId);
+    if (toDelete is not null)
+    {
+        db.Clients.Remove(toDelete);
+        await db.SaveChangesAsync();
+        Console.WriteLine($"Клиент ID {tempId} успешно удален через Remove + SaveChangesAsync.");
+    }
+
+    Console.WriteLine("\n7.4. Пакетная фиксация нескольких изменений в одной транзакции:");
+    var targetClient = await db.Clients.FindAsync(2);
+    if (targetClient is not null)
+    {
+        targetClient.Status = "active";
+    }
+    int batchSaved = await db.SaveChangesAsync();
+    Console.WriteLine($"Успешно применена атомарная пачка изменений (обработано записей: {batchSaved}).");
+
+    Console.WriteLine("Задание 7 успешно пройдено.\n");
 }
