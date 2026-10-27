@@ -1,0 +1,60 @@
+{
+    files.exclude: {
+        **/.git: true,
+        **/.svn: true,
+        **/.hg: true,
+        **/CVS: true,
+        **/.DS_Store: true,
+        **/Thumbs.db: true,
+        **/bin: true,
+        **/obj: true,
+        **/.vs: true
+    },
+    VsCodeTaskButtons.tasks: [
+        {
+            label: $(play) Запустить C#,
+            task: ▶ Запустить C# (проект или файл),
+            tooltip: Запустить активный C# файл или проект
+        },
+        {
+            label: $(package) Собрать проект,
+            task: 🔨 Собрать бинарник (Linux),
+            tooltip: Скомпилировать автономный бинарник Linux
+        },
+        {
+            label: $(package) Собрать .EXE,
+            task: 🔨 Собрать .EXE (Windows),
+            tooltip: Скомпилировать автономный .exe для Windows
+        },
+        {
+            label: $(plus) Создать проект,
+            task: ➕ Создать проект C# (.NET 8),
+            tooltip: Создать новый проект C#
+        },
+        {
+            label: $(database) Добавить Npgsql,
+            task: 🐘 Добавить Npgsql в текущий проект,
+            tooltip: Установить пакет Npgsql (PostgreSQL)
+        }
+    ],
+    code-runner.runInTerminal: true,
+    code-runner.fileDirectoryAsCwd: true,
+    code-runner.saveFileBeforeRun: true,
+    code-runner.executorMap: {
+        csharp: if ls *.csproj >/dev/null 2>&1; then dotnet run; else dotnet run $fileName; fi
+    },
+    code-runner.customCommand: if ls *.csproj >/dev/null 2>&1; then dotnet publish -c Release -r linux-x64 --self-contained -p:PublishSingleFile=true -o ./dist; else dotnet publish $fileName -c Release -r linux-x64 --self-contained -p:PublishSingleFile=true -o ./dist; fi,
+    background.enabled: true,
+    background.editor: {
+        useFront: true,
+        style: {
+            background-position: 100% 100%,
+            background-repeat: no-repeat,
+            background-size: 220px,
+            opacity: 0.22
+        },
+        images: [
+            https://i.ibb.co/3mSzp90d/1086293984.webp
+        ]
+    }
+}

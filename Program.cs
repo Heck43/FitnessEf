@@ -30,8 +30,9 @@ while (true)
     Console.WriteLine("0. Выход");
     Console.Write("Выберите пункт: ");
 
-    string choice = Console.ReadLine()?.Trim() ?? string.Empty;
-    if (choice == "0") break;
+    string? rawInput = Console.ReadLine();
+    if (rawInput == null || rawInput.Trim() == "0") break;
+    string choice = rawInput.Trim();
 
     try
     {

@@ -12,11 +12,17 @@ public sealed class FitnessContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            var connectionString = Environment.GetEnvironmentVariable("FITNESS_EF_CONNECTION")
-                ?? "Host=localhost;Port=5432;Database=FitnessEfTraining;Username=heck43";
+            var envConn = Environment.GetEnvironmentVariable("FITNESS_EF_CONNECTION");
+            string connectionString;
 
-            if (string.IsNullOrWhiteSpace(connectionString))
-                throw new InvalidOperationException("Не задана переменная FITNESS_EF_CONNECTION.");
+            if (!string.IsNullOrWhiteSpace(envConn) && envConn.Contains("Database="))
+            {
+                connectionString = envConn;
+            }
+            else
+            {
+                connectionString = "Host=localhost;Port=5432;Database=FitnessEfTraining;Username=heck43";
+            }
 
             optionsBuilder.UseNpgsql(connectionString);
         }

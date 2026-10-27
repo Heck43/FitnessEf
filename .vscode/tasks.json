@@ -1,0 +1,94 @@
+{
+    version: 2.0.0,
+    tasks: [
+        {
+            label: ▶ Запустить C# (проект или файл),
+            type: shell,
+            command: if ls *.csproj >/dev/null 2>&1; then dotnet run; else dotnet run "${file}"; fi,
+            options: {
+                cwd: ${fileDirname}
+            },
+            problemMatcher: [],
+            presentation: {
+                reveal: always,
+                focus: true,
+                panel: shared
+            }
+        },
+        {
+            label: 🔨 Собрать бинарник (Linux),
+            type: shell,
+            command: if ls "${fileDirname}"/*.csproj >/dev/null 2>&1; then dotnet publish "${fileDirname}" -c Release -r linux-x64 --self-contained -p:PublishSingleFile=true -o "${fileDirname}/dist"; else dotnet publish "${file}" -c Release -r linux-x64 --self-contained -p:PublishSingleFile=true -o "${fileDirname}/dist"; fi; echo -e "\033[0;32mСборка завершена! Бинарник находится в папке dist/\033[0m",
+            group: {
+                kind: build,
+                isDefault: true
+            },
+            problemMatcher: $msCompile,
+            presentation: {
+                reveal: always,
+                focus: true,
+                panel: shared
+            }
+        },
+        {
+            label: 🔨 Собрать .EXE (Windows),
+            type: shell,
+            command: if ls "${fileDirname}"/*.csproj >/dev/null 2>&1; then dotnet publish "${fileDirname}" -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o "${fileDirname}/dist"; else dotnet publish "${file}" -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o "${fileDirname}/dist"; fi; echo -e "\033[0;32mСборка завершена! Файл .exe находится в папке dist/\033[0m",
+            problemMatcher: $msCompile,
+            presentation: {
+                reveal: always,
+                focus: true,
+                panel: shared
+            }
+        },
+        {
+            label: ➕ Создать проект C# (.NET 8),
+            type: shell,
+            command: bash "${workspaceFolder}/.vscode/create_project.sh" "${input:projectName}" "${input:projectType}",
+            options: {
+                cwd: ${workspaceFolder}
+            },
+            problemMatcher: [],
+            presentation: {
+                reveal: always,
+                focus: true,
+                panel: shared
+            }
+        },
+        {
+            label: 🐘 Добавить Npgsql в текущий проект,
+            type: shell,
+            command: dotnet add package Npgsql && echo -e "\033[0;32mБиблиотека Npgsql успешно подключена!\033[0m",
+            options: {
+                cwd: ${fileDirname}
+            },
+            problemMatcher: [],
+            presentation: {
+                reveal: always,
+                focus: true,
+                panel: shared
+            }
+        }
+    ],
+    inputs: [
+        {
+            id: projectName,
+            type: promptString,
+            description: Имя папки/проекта (например: task8):,
+            default: task8
+        },
+        {
+            id: projectType,
+            type: pickString,
+            description: Тип проекта C#:,
+            options: [
+                { label: 🐘 Консольное приложение + PostgreSQL (Npgsql с шаблоном), value: console-npgsql },
+                { label: 📄 Консольное приложение (чистое), value: console },
+                { label: 🐘 Веб-API + PostgreSQL (Npgsql), value: webapi-npgsql },
+                { label: 🌐 Веб-API (чистое), value: webapi },
+                { label: 📚 Библиотека классов (Class Library), value: classlib }
+            ],
+            default: console-npgsql
+        }
+    ]
+}
