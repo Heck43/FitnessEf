@@ -1,7 +1,7 @@
 # Практическая работа: Entity Framework Core и PostgreSQL
 
 **Проект:** FitnessEf  
-**Студент (ФИО):** Heck43  
+**Студент (ФИО):** Heck43  (туранов никита)
 **База данных:** PostgreSQL (`FitnessEfTraining` и `Fitnes`)  
 **Платформа:** .NET 8 / C#  
 
