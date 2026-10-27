@@ -16,6 +16,7 @@ await RunTask4Async();
 await RunTask5Async();
 await RunTask6Async();
 await RunTask7Async();
+await RunTask8Async();
 
 static async Task RunTask2Async()
 {
@@ -265,4 +266,48 @@ static async Task RunTask7Async()
     Console.WriteLine($"Успешно применена атомарная пачка изменений (обработано записей: {batchSaved}).");
 
     Console.WriteLine("Задание 7 успешно пройдено.\n");
+}
+
+static async Task RunTask8Async()
+{
+    Console.WriteLine("--- [Задание 8] NULL, типы данных и Fluent API ---");
+    await using var db = new FitnessContext();
+
+    Console.WriteLine("8.1. Выборка клиентов с отсутствующим email (Where c.Email == null -> IS NULL):");
+    var clientsWithoutEmail = await db.Clients
+        .AsNoTracking()
+        .Where(c => c.Email == null)
+        .OrderBy(c => c.ClientId)
+        .ToListAsync();
+
+    foreach (var c in clientsWithoutEmail)
+    {
+        Console.WriteLine($"  ID {c.ClientId}: {c.FirstName} {c.LastName} (Email: NULL, Тел: {c.Phone ?? "NULL"})");
+    }
+
+    Console.WriteLine("\n8.2. Выборка клиентов с заполненным телефоном (c.Phone != null -> IS NOT NULL):");
+    var clientsWithPhone = await db.Clients
+        .AsNoTracking()
+        .Where(c => c.Phone != null)
+        .OrderBy(c => c.ClientId)
+        .ToListAsync();
+
+    foreach (var c in clientsWithPhone)
+    {
+        Console.WriteLine($"  ID {c.ClientId}: {c.FirstName} {c.LastName} (Тел: {c.Phone})");
+    }
+
+    Console.WriteLine("\n8.4. Диагностика соответствия схеме (Fluent API правила):");
+    var entity = db.Model.FindEntityType(typeof(Client));
+    var phoneProp = entity?.FindProperty(nameof(Client.Phone));
+    var emailProp = entity?.FindProperty(nameof(Client.Email));
+    var statusProp = entity?.FindProperty(nameof(Client.Status));
+    var dateProp = entity?.FindProperty(nameof(Client.RegistrationDate));
+
+    Console.WriteLine($"  - Phone: Nullable={phoneProp?.IsNullable}, MaxLength={phoneProp?.GetMaxLength()}");
+    Console.WriteLine($"  - Email: Nullable={emailProp?.IsNullable}, MaxLength={emailProp?.GetMaxLength()}");
+    Console.WriteLine($"  - Status: Nullable={statusProp?.IsNullable}, MaxLength={statusProp?.GetMaxLength()}");
+    Console.WriteLine($"  - RegistrationDate: ColumnType={dateProp?.GetColumnType()}");
+
+    Console.WriteLine("Задание 8 успешно пройдено.\n");
 }

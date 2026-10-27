@@ -35,7 +35,7 @@
 - [x] **Задание 5:** Фильтрация и поиск (Where, Any, Count, Skip/Take)
 - [x] **Задание 6:** Добавление записей (Add, SaveChangesAsync, валидация, DbUpdateException)
 - [x] **Задание 7:** Изменение и удаление (UPDATE, DELETE, SaveChangesAsync)
-- [ ] **Задание 8:** NULL, типы и конфигурация модели (Fluent API)
+- [x] **Задание 8:** NULL, типы и конфигурация модели (Fluent API, IsNullable, HasMaxLength)
 - [ ] **Задание 9:** Связь «клиент — посещения» (Include, 1-to-many)
 - [ ] **Задание 10:** Миграции и существующая база (Scaffold)
 - [ ] **Задание 11:** Ошибки, async, tracking и SQL (AsNoTracking, ToQueryString)
