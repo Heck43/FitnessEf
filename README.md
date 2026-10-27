@@ -6,7 +6,7 @@
 **Платформа:** .NET 8 / C#  
 
 ## Описание
-Практическая работа по освоению Entity Framework Core (Code First / Database First) и взаимодействию с СУБД PostgreSQL с использованием провайдера Npgsql.
+Итоговое консольное CRUD-приложение для управления клиентами фитнес-клуба с использованием **Entity Framework Core (Code First & Database First)** и СУБД **PostgreSQL** (`Npgsql`).
 
 ## Инструкция по развертыванию
 1. Склонировать репозиторий:
@@ -18,16 +18,20 @@
    ```bash
    export FITNESS_EF_CONNECTION="Host=localhost;Port=5432;Database=FitnessEfTraining;Username=postgres;Password=ВАШ_ПАРОЛЬ"
    ```
-3. Применить миграции Code First:
+3. Применить миграции Code First (создаст БД и таблицы):
    ```bash
    dotnet ef database update
    ```
-4. Запустить проект:
+4. Запустить интерактивное приложение:
    ```bash
    dotnet run
    ```
+   Или запустить автоматические тесты заданий 2-11:
+   ```bash
+   dotnet run -- --test
+   ```
 
-## Структура заданий
+## Структура выполненных заданий
 - [x] **Задание 1:** Установка окружения и создание проекта (NuGet-пакеты EF Core, Npgsql, Design, dotnet-ef)
 - [x] **Задание 2:** Модель Client и контекст FitnessContext (Fluent API, сопоставление схемы)
 - [x] **Задание 3:** Миграции и первая база (InitialCreate, database update, демо-данные)
@@ -39,4 +43,4 @@
 - [x] **Задание 9:** Связь «клиент — посещения» (Сущность Visit, 1:N, Include, Restrict)
 - [x] **Задание 10:** Миграции и существующая база (Scaffold базы Fitnes, ExistingData)
 - [x] **Задание 11:** Ошибки, async, tracking и SQL (AsNoTracking, ToQueryString, ChangeTracker)
-- [ ] **Задание 12:** Итоговая работа и проверка навыков (Консольное CRUD-приложение)
+- [x] **Задание 12:** Итоговая работа — полноценное консольное CRUD-приложение с интерактивным меню
