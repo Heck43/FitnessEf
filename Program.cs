@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FitnessEf;
+using FitnessEf.ExistingData;
 using Microsoft.EntityFrameworkCore;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -18,6 +19,7 @@ await RunTask6Async();
 await RunTask7Async();
 await RunTask8Async();
 await RunTask9Async();
+await RunTask10Async();
 
 static async Task RunTask2Async()
 {
@@ -356,4 +358,35 @@ static async Task RunTask9Async()
     }
 
     Console.WriteLine("Задание 9 успешно пройдено.\n");
+}
+
+static async Task RunTask10Async()
+{
+    Console.WriteLine("--- [Задание 10] Миграции и подключение к существующей базе Fitnes (Scaffold) ---");
+    await using var db = new FitnessContext();
+
+    Console.WriteLine("10.2. История миграций учебной базы FitnessEfTraining:");
+    var migrations = await db.Database.GetAppliedMigrationsAsync();
+    foreach (var m in migrations)
+    {
+        Console.WriteLine($"  - {m}");
+    }
+
+    Console.WriteLine("\n10.4. Чтение из существующей базы Fitnes через сгенерированный контекст FitnessExistingContext:");
+    var optionsBuilder = new DbContextOptionsBuilder<FitnessExistingContext>();
+    optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Fitnes;Username=heck43");
+
+    await using var existingDb = new FitnessExistingContext(optionsBuilder.Options);
+    var existingClients = await existingDb.Clients
+        .AsNoTracking()
+        .OrderBy(c => c.ClientId)
+        .Take(3)
+        .ToListAsync();
+
+    foreach (var c in existingClients)
+    {
+        Console.WriteLine($"  [Fitnes DB] ID {c.ClientId}: {c.FirstName} {c.LastName} | статус: {c.Status}");
+    }
+
+    Console.WriteLine("Задание 10 успешно пройдено.\n");
 }

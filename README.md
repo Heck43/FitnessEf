@@ -2,7 +2,7 @@
 
 **Проект:** FitnessEf  
 **Студент (ФИО):** Heck43  
-**База данных:** PostgreSQL (`FitnessEfTraining`)  
+**База данных:** PostgreSQL (`FitnessEfTraining` и `Fitnes`)  
 **Платформа:** .NET 8 / C#  
 
 ## Описание
@@ -37,6 +37,6 @@
 - [x] **Задание 7:** Изменение и удаление (UPDATE, DELETE, SaveChangesAsync)
 - [x] **Задание 8:** NULL, типы и конфигурация модели (Fluent API, IsNullable, HasMaxLength)
 - [x] **Задание 9:** Связь «клиент — посещения» (Сущность Visit, 1:N, Include, Restrict)
-- [ ] **Задание 10:** Миграции и существующая база (Scaffold)
+- [x] **Задание 10:** Миграции и существующая база (Scaffold базы Fitnes, ExistingData)
 - [ ] **Задание 11:** Ошибки, async, tracking и SQL (AsNoTracking, ToQueryString)
 - [ ] **Задание 12:** Итоговая работа и проверка навыков (Консольное CRUD-приложение)
