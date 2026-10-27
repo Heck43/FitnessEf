@@ -17,6 +17,7 @@ await RunTask5Async();
 await RunTask6Async();
 await RunTask7Async();
 await RunTask8Async();
+await RunTask9Async();
 
 static async Task RunTask2Async()
 {
@@ -310,4 +311,49 @@ static async Task RunTask8Async()
     Console.WriteLine($"  - RegistrationDate: ColumnType={dateProp?.GetColumnType()}");
 
     Console.WriteLine("Задание 8 успешно пройдено.\n");
+}
+
+static async Task RunTask9Async()
+{
+    Console.WriteLine("--- [Задание 9] Связь «клиент — посещения» (1:N, Include) ---");
+    await using var db = new FitnessContext();
+
+    int clientId = 1;
+    var clientExists = await db.Clients.AnyAsync(c => c.ClientId == clientId);
+    if (!clientExists)
+    {
+        Console.WriteLine("Клиента с таким ID нет.");
+        return;
+    }
+
+    var existingVisit = await db.Visits.FirstOrDefaultAsync(v => v.ClientId == clientId && v.Note == "Первичное Задание");
+    if (existingVisit == null)
+    {
+        db.Visits.Add(new Visit
+        {
+            ClientId = clientId,
+            VisitDate = DateOnly.FromDateTime(DateTime.Today),
+            Note = "Первичное Задание"
+        });
+        await db.SaveChangesAsync();
+        Console.WriteLine($"9.4. Добавлено посещение для клиента ID {clientId}.");
+    }
+
+    Console.WriteLine("\n9.5. Чтение клиентов вместе со связанными посещениями (.Include(c => c.Visits)):");
+    var clientsWithVisits = await db.Clients
+        .AsNoTracking()
+        .Include(c => c.Visits)
+        .OrderBy(c => c.ClientId)
+        .ToListAsync();
+
+    foreach (var client in clientsWithVisits)
+    {
+        Console.WriteLine($"  {client.FirstName} {client.LastName} (Посещений: {client.Visits.Count}):");
+        foreach (var visit in client.Visits)
+        {
+            Console.WriteLine($"    - {visit.VisitDate}: {visit.Note}");
+        }
+    }
+
+    Console.WriteLine("Задание 9 успешно пройдено.\n");
 }

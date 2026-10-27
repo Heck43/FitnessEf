@@ -36,7 +36,7 @@
 - [x] **Задание 6:** Добавление записей (Add, SaveChangesAsync, валидация, DbUpdateException)
 - [x] **Задание 7:** Изменение и удаление (UPDATE, DELETE, SaveChangesAsync)
 - [x] **Задание 8:** NULL, типы и конфигурация модели (Fluent API, IsNullable, HasMaxLength)
-- [ ] **Задание 9:** Связь «клиент — посещения» (Include, 1-to-many)
+- [x] **Задание 9:** Связь «клиент — посещения» (Сущность Visit, 1:N, Include, Restrict)
 - [ ] **Задание 10:** Миграции и существующая база (Scaffold)
 - [ ] **Задание 11:** Ошибки, async, tracking и SQL (AsNoTracking, ToQueryString)
 - [ ] **Задание 12:** Итоговая работа и проверка навыков (Консольное CRUD-приложение)

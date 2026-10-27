@@ -71,6 +71,51 @@ namespace FitnessEf.Migrations
 
                     b.ToTable("clients", (string)null);
                 });
+
+            modelBuilder.Entity("FitnessEf.Visit", b =>
+                {
+                    b.Property<int>("VisitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("visit_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("VisitId"));
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("integer")
+                        .HasColumnName("client_id");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("note");
+
+                    b.Property<DateOnly>("VisitDate")
+                        .HasColumnType("date")
+                        .HasColumnName("visit_date");
+
+                    b.HasKey("VisitId");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("visits", (string)null);
+                });
+
+            modelBuilder.Entity("FitnessEf.Visit", b =>
+                {
+                    b.HasOne("FitnessEf.Client", "Client")
+                        .WithMany("Visits")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("FitnessEf.Client", b =>
+                {
+                    b.Navigation("Visits");
+                });
 #pragma warning restore 612, 618
         }
     }
